@@ -1,3 +1,8 @@
+INSERT INTO `Entry` VALUES (null, 'HTML & CSS','07/24/2025','We talked about HTML components and how to make grid layouts with Flexbox in CSS.',4);
+
+ALTER TABLE `Entry`
+    ADD COLUMN `concept` TEXT NOT NULL DEFAULT '';
+
 CREATE TABLE `Entry` (
 	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`dateOfEntry`	DATE,
