@@ -1,13 +1,13 @@
-INSERT INTO `Entry` VALUES (null, "HTML & CSS", 2025-07-24, "We talked about HTML components and how to make grid layouts with Flexbox in CSS.", 3)
-INSERT INTO `Entry` VALUES (null, "Complex Flexbox", 2025-07-26, "I tried to have an element in my Flexbox layout also be another Flexbox layout. It hurt my brain. I hate Steve.", 2)
+INSERT INTO `Entry` VALUES (null, "HTML & CSS", 2025-07-24, "We talked about HTML components and how to make grid layouts with Flexbox in CSS.", 3);
+INSERT INTO `Entry` VALUES (null, "Complex Flexbox", 2025-07-26, "I tried to have an element in my Flexbox layout also be another Flexbox layout. It hurt my brain. I hate Steve.", 2);
 INSERT INTO `Entry` VALUES (null, "THE FUTURE", 3443-12-02, "IS CHROMEE", 1);
 
-INSERT INTO `Moods` VALUES (null, "Happy")
-INSERT INTO `Moods` VALUES (null, "Sad")
-INSERT INTO `Moods` VALUES (null, "Sleepy")
-INSERT INTO `Moods` VALUES (null, "Good")
-INSERT INTO `Moods` VALUES (null, "Stressed")
-INSERT INTO `Moods` VALUES (null, "Weird");
+INSERT INTO `Mood` VALUES (null, "Happy");
+INSERT INTO `Mood` VALUES (null, "Sad");
+INSERT INTO `Mood` VALUES (null, "Sleepy");
+INSERT INTO `Mood` VALUES (null, "Good");
+INSERT INTO `Mood` VALUES (null, "Stressed");
+INSERT INTO `Mood` VALUES (null, "Weird");
 
 ALTER TABLE `Entry`
     ADD COLUMN `concept` TEXT NOT NULL DEFAULT '';
@@ -20,6 +20,8 @@ CREATE TABLE `Entry` (
     `mood_id` INTEGER NOT NULL,
 	FOREIGN KEY(`mood_id`) REFERENCES `Mood`(`id`)
 );
+
+DELETE FROM `Mood`;
 
 CREATE TABLE `Mood` (
     `id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
