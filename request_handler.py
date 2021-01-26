@@ -1,7 +1,7 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from entries import get_all_entries, get_single_entry 
-# get_entries_by_location, get_entries_by_status, create_entry, delete_entry, update_entry
+from entries import get_all_entries, get_single_entry, create_entry, delete_entry, search_entries
+# get_entries_by_location, get_entries_by_status, update_entry
 # from locations import get_all_locations, get_single_location, create_location, delete_location, update_location
 # from employees import get_all_employees, get_single_employee, get_employees_by_location, save_employee, delete_employee, update_employee
 # from customers import get_all_customers, get_single_customer, get_customers_by_email, create_customer, delete_customer, update_customer
@@ -76,7 +76,6 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_entry(id)}"
                 else:
                     response = f"{get_all_entries()}"
-        self.wfile.write(response.encode())
     #         elif resource == "customers":
     #             if id is not None:
     #                 response = f"{get_single_customer(id)}"
@@ -93,18 +92,19 @@ class HandleRequests(BaseHTTPRequestHandler):
     #             else:
     #                 response = f"{get_all_locations()}"
 
-    #     # Response from parse_url() is a tuple with 3
-    #     # items in it, which means the request was for
-    #     # `/resource?parameter=value`
-    #     elif len(parsed) == 3:
-    #         ( resource, key, value ) = parsed
+        # Response from parse_url() is a tuple with 3
+        # items in it, which means the request was for
+        # `/resource?parameter=value`
+        elif len(parsed) == 3:
+            ( resource, key, value ) = parsed
 
-    #         # Is the resource `customers` and was there a
-    #         # query parameter that specified the customer
-    #         # email as a filtering value?
-    #         if key == "email" and resource == "customers":
-    #             response = get_customers_by_email(value)
+            # Is the resource `entries` and was there a
+            # query parameter that specified the entries
+            # email as a filtering value?
+            if key == "search_term" and resource == "entries":
+                response = search_entries(value)
 
+        self.wfile.write(response.encode())
     #         # Is the resource `entrys` and was there a
     #         # query parameter that specified the entry
     #         # location_id as a filtering value?
@@ -123,34 +123,36 @@ class HandleRequests(BaseHTTPRequestHandler):
     #         if key == "status" and resource == "entrys":
     #             response = get_entrys_by_status(value)
 
-    #     # RESPONSE DOES NOT WANT TO BE ENCODED
-    # # Here's a method on the class that overrides the parent's method.
-    # # It handles any POST request.
-    # def do_POST(self):
-    #     self._set_headers(201)
-    #     content_len = int(self.headers.get('content-length', 0))
-    #     post_body = self.rfile.read(content_len)
+        # RESPONSE DOES NOT WANT TO BE ENCODED
+    # Here's a method on the class that overrides the parent's method.
+    # It handles any POST request.
+    def do_POST(self):
+        self._set_headers(201)
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
 
-    #     # Convert JSON string to a Python dictionary
-    #     post_body = json.loads(post_body)
+        # Convert JSON string to a Python dictionary
+        post_body = json.loads(post_body)
 
-    #     # Parse the URL
-    #     (resource, id) = self.parse_url(self.path)
+        # Parse the URL
+        (resource, id) = self.parse_url(self.path)
 
-    #     # Initialize new entry
-    #     new_entry = None
-    #     new_location = None
-    #     new_employee = None
-    #     new_customer = None                        
+        # Initialize new entry
+        new_entry = None                      
 
-    #     # Add a new entry to the list. Don't worry about
-    #     # the orange squiggle, you'll define the create_entry
-    #     # function next.
-    #     if resource == "entrys":
-    #         new_entry = create_entry(post_body)
+        if resource == "entries":
+            new_entry = create_entry(post_body)
 
-    #     # Encode the new entry and send in response
-    #     self.wfile.write(f"{new_entry}".encode())
+        # Encode the new entry and send in response
+        self.wfile.write(f"{new_entry}".encode())
+
+        #     new_location = None
+        #     new_employee = None
+        #     new_customer = None  
+        
+        # Add a new entry to the list. Don't worry about
+        # the orange squiggle, you'll define the create_entry
+        # function next.
 
     #     # Add a new location to the list. Don't worry about
     #     # the orange squiggle, you'll define the create_location
@@ -179,16 +181,19 @@ class HandleRequests(BaseHTTPRequestHandler):
     #     # Encode the new customer and send in response
     #     self.wfile.write(f"{new_customer}".encode())
 
-    # def do_DELETE(self):
-    #     # Set a 204 response code
-    #     self._set_headers(204)
+    def do_DELETE(self):
+        # Set a 204 response code
+        self._set_headers(204)
 
-    #     # Parse the URL
-    #     (resource, id) = self.parse_url(self.path)
+        # Parse the URL
+        (resource, id) = self.parse_url(self.path)
 
-    #     # Delete a single entry from the list
-    #     if resource == "entrys":
-    #         delete_entry(id)
+        # Delete a single entry from the list
+        if resource == "entries":
+            delete_entry(id)
+
+        # Encode the new item and send in response
+        self.wfile.write("".encode())
 
     #     # Delete a single location from the list
     #     if resource == "locations":
@@ -201,9 +206,6 @@ class HandleRequests(BaseHTTPRequestHandler):
     #     # Delete a single customer from the list
     #     if resource == "customers":
     #         delete_customer(id)
-
-    #     # Encode the new item and send in response
-    #     self.wfile.write("".encode())
 
     # def do_PUT(self):
     #     content_len = int(self.headers.get('content-length', 0))

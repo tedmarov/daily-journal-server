@@ -17,7 +17,7 @@ INSERT INTO `Tag` VALUES (null, "API");
 INSERT INTO `Tag` VALUES (null, "components");
 INSERT INTO `Tag` VALUES (null, "fetch");
 
-UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'JournalEntries';
+UPDATE `sqlite_sequence` SET `seq` = 0 WHERE `name` = 'Entry';
 
 DELETE FROM `Mood`;
 DELETE FROM `Entry`;
