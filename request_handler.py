@@ -126,6 +126,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         # RESPONSE DOES NOT WANT TO BE ENCODED
     # Here's a method on the class that overrides the parent's method.
     # It handles any POST request.
+    # WHY WON"T YOU WORK
     def do_POST(self):
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
