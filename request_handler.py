@@ -1,6 +1,6 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from entries import get_all_entries, get_single_entry, create_entry, delete_entry, search_entries
+from entries import get_all_entries, get_single_entry, create_entry, delete_entry, get_entries_by_search_term
 # get_entries_by_location, get_entries_by_status, update_entry
 # from locations import get_all_locations, get_single_location, create_location, delete_location, update_location
 # from employees import get_all_employees, get_single_employee, get_employees_by_location, save_employee, delete_employee, update_employee
@@ -102,7 +102,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             # query parameter that specified the entries
             # email as a filtering value?
             if key == "search_term" and resource == "entries":
-                response = search_entries(value)
+                response = get_entries_by_search_term(value)
 
         self.wfile.write(response.encode())
     #         # Is the resource `entrys` and was there a
@@ -123,10 +123,8 @@ class HandleRequests(BaseHTTPRequestHandler):
     #         if key == "status" and resource == "entrys":
     #             response = get_entrys_by_status(value)
 
-        # RESPONSE DOES NOT WANT TO BE ENCODED
     # Here's a method on the class that overrides the parent's method.
     # It handles any POST request.
-    # WHY WON"T YOU WORK
     def do_POST(self):
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
