@@ -66,4 +66,33 @@ def get_single_entry(id):
         # Create an entry instance from the current row
         entry = Entry(data['id'], data['concept'], data['date_of_entry'],
                             data['entry'], data['mood_id'])
-    
+        return json.dumps(entry.__dict__)
+
+    # To implement tags, define a create function for entries
+    # mod it to have two INSERT SQL statements
+    # Needs to create data for EntryTags
+def create_entry(new_entry):
+    with sqlite3.connect("./kennel.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        INSERT INTO Entry
+            ( name, breed, status, location_id, customer_id )
+        VALUES
+            ( ?, ?, ?, ?, ?);
+        """, (new_entry['name'], new_entry['breed'],
+                new_entry['status'], new_entry['location_id'],
+                new_entry['customer_id'], ))
+
+        # The `lastrowid` property on the cursor will return
+        # the primary key of the last thing that got added to
+        # the database.
+        id = db_cursor.lastrowid
+
+        # Add the `id` property to the entry dictionary that
+        # was sent by the client so that the client sees the
+        # primary key in the response.
+        new_entry['id'] = id
+
+
+    return json.dumps(new_entry)

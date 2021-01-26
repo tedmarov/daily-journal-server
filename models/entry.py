@@ -9,4 +9,4 @@ class Entry():
         self.date_of_entry = date_of_entry
         self.entry = entry
         self.mood_id = mood_id
-        # self.mood = None
+        self.mood = None
