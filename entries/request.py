@@ -96,7 +96,7 @@ def delete_entry(id):
         WHERE id = ?
         """, (id, ))
 
-def search_entries(search_term):
+def get_entries_by_search_term(search_term):
     with sqlite3.connect("./dailyjournal.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()

@@ -1,1 +1,1 @@
-from .request import get_all_entries, get_single_entry, create_entry, search_entries, delete_entry
+from .request import get_all_entries, get_single_entry, create_entry, get_entries_by_search_term, delete_entry
